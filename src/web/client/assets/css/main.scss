@@ -1,0 +1,44 @@
+@import './reset.scss';
+@import './quasar.scss';
+
+// ----------------------------------------------------------------------------
+// General Elements
+// ----------------------------------------------------------------------------
+
+:root {
+    --q-primary: #{$primary};
+    --q-secondary: #{$secondary};
+    --q-accent: #{$accent};
+
+    --q-dark: #{$dark};
+    --q-dark-page: #{$dark-page};
+
+    --q-positive: #{$positive};
+    --q-negative: #{$negative};
+    --q-info: #{$info};
+    --q-warning: #{$warning};
+}
+
+noscript{
+    background: $warning;
+    display: block;
+    padding: $padding;
+
+    font-weight: bold;
+    text-align: center;
+}
+
+html, body, #app{
+    height: 100%;
+}
+
+body{
+    color: $dark;
+    font-size: 1rem;
+    font-family: 'Roboto', sans-serif;
+    line-height: $ratio;
+}
+
+.q-tooltip{
+    padding: math.div($padding, 2);
+}
