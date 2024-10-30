@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { CharacterType, GearRank, MIN_GEAR_RANK, MAX_GEAR_RANK, calculateCharacterUpgradeCost, CharacterUpgradeCost, addCharacterUpgradeCost } from './gameData'
+import { useLocalStorage } from '@vueuse/core'
 
 export type CharacterGoal = {
     characterType: CharacterType
@@ -11,10 +12,12 @@ export type CharacterStore = {
     goals: Array<CharacterGoal>
 }
 
-export const useCharacterStore = defineStore('CharacterStore', {
-    state: (): CharacterStore => {
+const STORE_NAME = 'CharacterStore'
+
+export const useCharacterStore = defineStore(STORE_NAME, {
+    state: () => {
         return {
-            goals: [],
+            goals: useLocalStorage(`${STORE_NAME}/goals`, new Array<CharacterGoal>()),
         }
     },
 
