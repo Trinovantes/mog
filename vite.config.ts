@@ -5,7 +5,8 @@ import path from 'node:path'
 import dsv from '@rollup/plugin-dsv'
 
 export default defineConfig({
-    root: './src/web',
+    root: path.resolve(__dirname, 'src/web'),
+    base: '/mog/',
 
     server: {
         port: 8080,
