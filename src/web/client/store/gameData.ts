@@ -41,7 +41,6 @@ export function isGearType(gearType: string): gearType is GearType {
 
 export function isWeapon(gearType: GearType): boolean {
     switch (gearType) {
-        case GearType.SHIELD:
         case GearType.BOW:
         case GearType.CLAW:
         case GearType.AXE:
