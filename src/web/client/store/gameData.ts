@@ -226,9 +226,10 @@ export function parseCharacterGearType(csv: string): GearTypesForCharacterType[C
                 const rank = parseGearRank(col)
                 if (rank === currRank) {
                     rankGears.currRankGear.push(gearType)
-                }
-                if (rank === prevRank) {
+                } else if (rank === prevRank) {
                     rankGears.prevRankGear.push(gearType)
+                } else {
+                    throw new Error(`Invalid rank:${col}`)
                 }
             }
         }
