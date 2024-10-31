@@ -126,7 +126,7 @@ export function getCharacterTypeLabel(characterType: string): string {
 export type GearRank = Brand<number, 'GearRank'>
 
 export const MIN_GEAR_RANK = 1 as GearRank
-export const MAX_GEAR_RANK = 15 as GearRank
+export const MAX_GEAR_RANK = 19 as GearRank
 
 export function parseGearRank(gearRank: string): GearRank {
     const val = parseInt(gearRank)
