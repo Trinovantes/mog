@@ -45,7 +45,10 @@ const getCharacterTypeInfoImg = (characterType: string) => {
                             {{ opt.label }}
 
                             <q-tooltip anchor="top right" self="top left">
-                                <img :src="getCharacterTypeInfoImg(opt.value)">
+                                <img
+                                    :src="getCharacterTypeInfoImg(opt.value)"
+                                    class="character-type-preview"
+                                >
                             </q-tooltip>
                         </q-item-section>
                     </q-item>
@@ -96,5 +99,10 @@ aside{
         display: grid;
         gap: $padding;
     }
+}
+
+// tooltip teleported to doc root
+img.character-type-preview{
+    max-height: 600px;
 }
 </style>
