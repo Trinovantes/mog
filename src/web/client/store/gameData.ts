@@ -1,14 +1,14 @@
 import { Brand } from '@/@types/Brand'
-import healerCsv from './csv/healer.csv'
-import tank1Csv from './csv/tank1.csv'
-import tank3Csv from './csv/tank2.csv'
-import tank2Csv from './csv/tank3.csv'
-import dps1Csv from './csv/dps1.csv'
-import dps2Csv from './csv/dps2.csv'
-import dps3Csv from './csv/dps3.csv'
-import dps4Csv from './csv/dps4.csv'
-import dps5Csv from './csv/dps5.csv'
-import dps6Csv from './csv/dps6.csv'
+import healerCsv from './csv/healer.csv' with { type: 'text' }
+import tank1Csv from './csv/tank1.csv' with { type: 'text' }
+import tank3Csv from './csv/tank2.csv' with { type: 'text' }
+import tank2Csv from './csv/tank3.csv' with { type: 'text' }
+import dps1Csv from './csv/dps1.csv' with { type: 'text' }
+import dps2Csv from './csv/dps2.csv' with { type: 'text' }
+import dps3Csv from './csv/dps3.csv' with { type: 'text' }
+import dps4Csv from './csv/dps4.csv' with { type: 'text' }
+import dps5Csv from './csv/dps5.csv' with { type: 'text' }
+import dps6Csv from './csv/dps6.csv' with { type: 'text' }
 
 // ----------------------------------------------------------------------------
 // MARK: GearType
@@ -179,44 +179,55 @@ export type GearTypesForCharacterType = {
     }>
 }
 
-export function parseCharacterGearType(csv: Array<Record<string, string>>): GearTypesForCharacterType[CharacterType] {
+export function parseCharacterGearType(csv: string): GearTypesForCharacterType[CharacterType] {
     const output: GearTypesForCharacterType[CharacterType] = []
 
     let prevRank: number = MIN_GEAR_RANK - 1
     let currRank: number = MIN_GEAR_RANK
 
-    for (const row of csv) {
+    const rows = csv
+        .trim().split('\n')
+        .map((row) => {
+            const cols = row.trim().split(',')
+            return cols.map((col) => col.trim())
+        })
+
+    for (let i = 1; i < rows.length; i++) {
         const rankGears: GearTypesForCharacterType[CharacterType][GearRank] = {
             currRankGear: [],
             prevRankGear: [],
         }
 
-        const gearRank = parseGearRank(row['rank'])
+        const cols = rows[i]
+        const gearRank = parseGearRank(cols[0])
         output[gearRank] = rankGears
 
-        for (const [colKey, colVal] of Object.entries(row)) {
-            if (!isGearType(colKey)) {
-                continue
-            }
-            if (!colVal) {
-                continue
+        for (let j = 1; j < cols.length; j++) {
+            const col = cols[j]
+            if (!col) {
+                continue // Skip empty cell
             }
 
-            if (colVal === '*') {
+            const gearType = rows[0][j]
+            if (!isGearType(gearType)) {
+                throw new Error(`Invalid gearType:${gearType}`)
+            }
+
+            if (col === '*') {
                 if (currRank === MIN_GEAR_RANK) {
-                    rankGears.currRankGear.push(colKey)
-                    rankGears.currRankGear.push(colKey)
+                    rankGears.currRankGear.push(gearType)
+                    rankGears.currRankGear.push(gearType)
                 } else {
-                    rankGears.currRankGear.push(colKey)
-                    rankGears.prevRankGear.push(colKey)
+                    rankGears.currRankGear.push(gearType)
+                    rankGears.prevRankGear.push(gearType)
                 }
             } else {
-                const rank = parseGearRank(colVal)
+                const rank = parseGearRank(col)
                 if (rank === currRank) {
-                    rankGears.currRankGear.push(colKey)
+                    rankGears.currRankGear.push(gearType)
                 }
                 if (rank === prevRank) {
-                    rankGears.prevRankGear.push(colKey)
+                    rankGears.prevRankGear.push(gearType)
                 }
             }
         }

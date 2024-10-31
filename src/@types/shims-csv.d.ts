@@ -1,4 +1,4 @@
 declare module '*.csv' {
-    const value: Array<Record<string, string>>
-    export default value
+    const contents: string
+    export default contents
 }

@@ -2,7 +2,7 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { quasar, transformAssetUrls } from '@quasar/vite-plugin'
 import path from 'node:path'
-import dsv from '@rollup/plugin-dsv'
+import plainText from 'vite-plugin-plain-text'
 
 export default defineConfig({
     root: path.resolve(__dirname, 'src/web'),
@@ -32,7 +32,11 @@ export default defineConfig({
     },
 
     plugins: [
-        dsv(),
+        plainText([
+            /\.csv$/,
+        ], {
+            namedExport: false,
+        }),
 
         vue({
             template: { transformAssetUrls },
