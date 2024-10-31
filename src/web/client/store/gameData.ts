@@ -290,33 +290,41 @@ export function getGearRankShardCost(gearRank: GearRank, isWeapon: boolean): Sha
         case 1: return { [gearRank]: 1 }
         case 2: return { [gearRank]: 1 }
         case 3: {
-            const cost = isWeapon ? 5 : 3
+            const cost = isWeapon ? 3 : 3
             return addShardCost({ [gearRank]: cost }, getGearRankShardCost(prevRank, isWeapon))
         }
         case 4: {
-            const cost = isWeapon ? 7 : 5
+            const cost = isWeapon ? 5 : 3
             return addShardCost({ [gearRank]: cost }, getGearRankShardCost(prevRank, isWeapon))
         }
         case 5: {
-            const cost = isWeapon ? 10 : 7
+            const cost = isWeapon ? 7 : 5
             return addShardCost({ [gearRank]: cost }, getGearRankShardCost(prevRank, isWeapon))
         }
         case 6: {
-            const cost = isWeapon ? 15 : 10
+            const cost = isWeapon ? 7 : 7
             return addShardCost({ [gearRank]: cost }, getGearRankShardCost(prevRank, isWeapon))
         }
-        case 7: return isWeapon ? { [gearRank]: 20, [prevRank]: 15 } : { [gearRank]: 20, [prevRank]: 10 }
-        case 8: return isWeapon ? { [gearRank]: 25, [prevRank]: 20 } : { [gearRank]: 25, [prevRank]: 15 }
-        case 9: return isWeapon ? { [gearRank]: 30, [prevRank]: 25 } : { [gearRank]: 30, [prevRank]: 20 }
+        case 7: return isWeapon
+            ? { [gearRank]: 10, [prevRank]: 7 }
+            : { [gearRank]: 10, [prevRank]: 7 }
+        case 8: return isWeapon
+            ? { [gearRank]: 15, [prevRank]: 10 }
+            : { [gearRank]: 15, [prevRank]: 7 }
+        case 9: return isWeapon
+            ? { [gearRank]: 20, [prevRank]: 15 }
+            : { [gearRank]: 20, [prevRank]: 10 }
     }
 
-    if (isGearRank(gearRank)) {
+    if (gearRank <= 18) {
+        return isWeapon
+            ? { [gearRank]: 30, [prevRank]: 20 }
+            : { [gearRank]: 30, [prevRank]: 15 }
+    } else {
         return isWeapon
             ? { [gearRank]: 40, [prevRank]: 30 }
             : { [gearRank]: 40, [prevRank]: 25 }
     }
-
-    throw new Error('Not Implemented')
 }
 
 export const weaponShardCost: Record<GearRank, ShardCost> = (() => {
