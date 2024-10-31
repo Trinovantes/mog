@@ -32,9 +32,9 @@ export enum GearType {
     SWORD = 'sword',
 }
 
-export const gearTypes = Object.values(GearType)
-
+const gearTypes = Object.values(GearType)
 const gearTypesSet = new Set<string>(gearTypes)
+
 export function isGearType(gearType: string): gearType is GearType {
     return gearTypesSet.has(gearType)
 }
@@ -94,9 +94,11 @@ export enum CharacterType {
     DPS_6 = 'dps6',
 }
 
-const characterTypeSet = new Set<string>(Object.values(CharacterType))
+const characterTypes = Object.values(CharacterType)
+const characterTypesSet = new Set<string>(characterTypes)
+
 export function isCharacterType(characterType: string): characterType is CharacterType {
-    return characterTypeSet.has(characterType)
+    return characterTypesSet.has(characterType)
 }
 
 export function getCharacterTypeLabel(characterType: string): string {
