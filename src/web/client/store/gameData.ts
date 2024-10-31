@@ -405,7 +405,8 @@ export function calculateCharacterUpgradeCost(characterType: CharacterType, star
     for (let rank = startRank; rank <= endRank; rank++) {
         const gearRequiredForRank = characterTypeToGearType[characterType][rank]
         if (!gearRequiredForRank) {
-            throw new Error(`Failed to get gearRequiredForRank characterType:${characterType} rank:${rank}`)
+            console.warn(`Missing data characterType:${characterType} rank:${rank}`)
+            continue
         }
 
         for (const gearType of gearRequiredForRank.currRankGear) {
