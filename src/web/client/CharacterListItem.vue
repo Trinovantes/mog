@@ -29,7 +29,12 @@ watch(goalRanks, (goalRanks) => {
 <template>
     <div class="goal">
         <h3>
-            {{ getCharacterTypeLabel(goal.characterType) }}
+            <q-input
+                :label="getCharacterTypeLabel(goal.characterType)"
+                v-model="goal.characterName"
+                clearable
+                outlined
+            />
 
             <q-btn
                 flat

@@ -4,6 +4,7 @@ import { useLocalStorage } from '@vueuse/core'
 
 export type CharacterGoal = {
     characterType: CharacterType
+    characterName: string | null
     startRank: GearRank
     endRank: GearRank
 }
@@ -38,6 +39,7 @@ export const useCharacterStore = defineStore(STORE_NAME, {
         addGoal(characterType: CharacterType) {
             this.goals.push({
                 characterType,
+                characterName: null,
                 startRank: MIN_GEAR_RANK,
                 endRank: MAX_GEAR_RANK,
             })
