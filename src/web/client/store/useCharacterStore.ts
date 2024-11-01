@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { CharacterType, GearRank, MIN_GEAR_RANK, MAX_GEAR_RANK, calculateCharacterUpgradeCost, CharacterUpgradeCost, addCharacterUpgradeCost } from './gameData'
+import { CharacterType, GearRank, MIN_GEAR_RANK, MAX_GEAR_RANK, calculateCharacterUpgradeCost, CharacterUpgradeCost, addCharacterUpgradeCost, subtractAnniversaryShop } from './gameData'
 import { useLocalStorage } from '@vueuse/core'
 
 export type CharacterGoal = {
@@ -9,16 +9,13 @@ export type CharacterGoal = {
     endRank: GearRank
 }
 
-export type CharacterStore = {
-    goals: Array<CharacterGoal>
-}
-
 const STORE_NAME = 'CharacterStore'
 
 export const useCharacterStore = defineStore(STORE_NAME, {
     state: () => {
         return {
             goals: useLocalStorage(`${STORE_NAME}/goals`, new Array<CharacterGoal>()),
+            includeAnniShop: useLocalStorage(`${STORE_NAME}/includeAnniShop`, false),
         }
     },
 
@@ -29,6 +26,10 @@ export const useCharacterStore = defineStore(STORE_NAME, {
             for (const goal of state.goals) {
                 const goalCost = calculateCharacterUpgradeCost(goal.characterType, goal.startRank, goal.endRank)
                 totalCost = addCharacterUpgradeCost(totalCost, goalCost)
+            }
+
+            if (state.includeAnniShop) {
+                totalCost = subtractAnniversaryShop(totalCost)
             }
 
             return totalCost

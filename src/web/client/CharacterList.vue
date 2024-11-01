@@ -28,39 +28,49 @@ const getCharacterTypeInfoImg = (characterType: string) => {
         </h2>
 
         <div class="form">
-            <q-select
-                v-model="newCharacterType"
-                :options="characterTypeOptions"
-                outlined
-                clearable
-                emit-value
-                map-options
-                label="Character Type"
-            >
-                <template #option="{ opt, itemProps }">
-                    <q-item
-                        v-bind="itemProps"
-                    >
-                        <q-item-section>
-                            {{ opt.label }}
+            <div>
+                <q-select
+                    v-model="newCharacterType"
+                    :options="characterTypeOptions"
+                    outlined
+                    clearable
+                    emit-value
+                    map-options
+                    label="Character Type"
+                >
+                    <template #option="{ opt, itemProps }">
+                        <q-item
+                            v-bind="itemProps"
+                        >
+                            <q-item-section>
+                                {{ opt.label }}
 
-                            <q-tooltip anchor="top right" self="top left">
-                                <img
-                                    :src="getCharacterTypeInfoImg(opt.value)"
-                                    class="character-type-preview"
-                                >
-                            </q-tooltip>
-                        </q-item-section>
-                    </q-item>
-                </template>
-            </q-select>
+                                <q-tooltip anchor="top right" self="top left">
+                                    <img
+                                        :src="getCharacterTypeInfoImg(opt.value)"
+                                        class="character-type-preview"
+                                    >
+                                </q-tooltip>
+                            </q-item-section>
+                        </q-item>
+                    </template>
+                </q-select>
 
-            <q-btn
-                color="positive"
-                round
-                icon="add"
-                @click="addCharacterType"
-            />
+                <q-btn
+                    color="positive"
+                    round
+                    icon="add"
+                    @click="addCharacterType"
+                />
+            </div>
+
+            <div>
+                <q-checkbox
+                    v-model="characterStore.includeAnniShop"
+                    label="Include Anniversary Shop"
+                    title="Subtracts equipment from anniversary shop from total cost"
+                />
+            </div>
         </div>
 
         <div class="list">
@@ -90,9 +100,14 @@ aside{
 
     .form{
         display: grid;
-        grid-template-columns: 1fr auto;
         gap: $padding;
-        align-items: center;
+
+        > div:first-child{
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: $padding;
+            align-items: center;
+        }
     }
 
     .list{

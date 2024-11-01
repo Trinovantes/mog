@@ -389,13 +389,16 @@ export function addCharacterUpgradeCost(a: CharacterUpgradeCost, b: CharacterUpg
 
 export function calculateCharacterUpgradeCost(characterType: CharacterType, startRank: GearRank, endRank: GearRank): CharacterUpgradeCost {
     const upgradeCost: CharacterUpgradeCost = {}
-    const addShardToCost = (gearType: GearType, shardRank: GearRank, numShards: number) => {
-        const rankCosts = upgradeCost[shardRank]
-        if (!rankCosts) {
-            throw new Error(`Invalid shardRank:${shardRank}`)
-        }
+    const addShardToCost = (gearType: GearType, shardCost: ShardCost) => {
+        for (const [shardRank, numShards] of Object.entries(shardCost)) {
+            const rank = parseGearRank(shardRank)
+            const rankCosts = upgradeCost[rank]
+            if (!rankCosts) {
+                throw new Error(`Invalid shardRank:${shardRank}`)
+            }
 
-        rankCosts[gearType] = (rankCosts[gearType] ?? 0) + numShards
+            rankCosts[gearType] = (rankCosts[gearType] ?? 0) + (numShards ?? 0)
+        }
     }
 
     for (let rank = MIN_GEAR_RANK; rank <= MAX_GEAR_RANK; rank++) {
@@ -411,16 +414,48 @@ export function calculateCharacterUpgradeCost(characterType: CharacterType, star
 
         for (const gearType of gearRequiredForRank.currRankGear) {
             const shardCost = getShardCost(rank, gearType)
-            for (const [shardRank, numShards] of Object.entries(shardCost)) {
-                addShardToCost(gearType, parseGearRank(shardRank), numShards ?? 0)
-            }
+            addShardToCost(gearType, shardCost)
         }
 
         for (const gearType of gearRequiredForRank.prevRankGear) {
             const shardCost = getShardCost(rank - 1, gearType)
-            for (const [shardRank, numShards] of Object.entries(shardCost)) {
-                addShardToCost(gearType, parseGearRank(shardRank), numShards ?? 0)
+            addShardToCost(gearType, shardCost)
+        }
+    }
+
+    return upgradeCost
+}
+
+export function subtractAnniversaryShop(upgradeCost: CharacterUpgradeCost): CharacterUpgradeCost {
+    const TEN_GEAR_RANK_START = 1 as GearRank
+    const TEN_GEAR_RANK_END = 12 as GearRank
+    const FIVE_GEAR_RANK_START = 13 as GearRank
+    const FIVE_GEAR_RANK_END = 19 as GearRank
+
+    const subtractShardCost = (gearType: GearType, shardCost: ShardCost, multiplier: number) => {
+        for (const [shardRank, numShards] of Object.entries(shardCost)) {
+            const rank = parseGearRank(shardRank)
+            const rankCosts = upgradeCost[rank]
+            if (!rankCosts) {
+                continue
             }
+
+            const newCost = (rankCosts[gearType] ?? 0) - (numShards ?? 0) * multiplier
+            rankCosts[gearType] = Math.max(0, newCost)
+        }
+    }
+
+    for (let rank = TEN_GEAR_RANK_START; rank <= TEN_GEAR_RANK_END; rank++) {
+        for (const gearType of gearTypes) {
+            const shardCost = getShardCost(rank, gearType)
+            subtractShardCost(gearType, shardCost, 10)
+        }
+    }
+
+    for (let rank = FIVE_GEAR_RANK_START; rank <= FIVE_GEAR_RANK_END; rank++) {
+        for (const gearType of gearTypes) {
+            const shardCost = getShardCost(rank, gearType)
+            subtractShardCost(gearType, shardCost, 5)
         }
     }
 
