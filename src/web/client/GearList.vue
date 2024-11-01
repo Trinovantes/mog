@@ -10,15 +10,26 @@ const getAmountCssClass = (amount: number): string => {
     if (!characterStore.highlightAmounts) {
         return ''
     }
-
     if (amount == 0) {
         return ''
-    } else if (amount < 40) {
-        return 'low'
-    } else if (amount < 80) {
-        return 'medium'
+    }
+
+    if (characterStore.convertToShards) {
+        if (amount < 40) {
+            return 'low'
+        } else if (amount < 80) {
+            return 'medium'
+        } else {
+            return 'high'
+        }
     } else {
-        return 'high'
+        if (amount <= 2) {
+            return 'low'
+        } else if (amount <= 4) {
+            return 'medium'
+        } else {
+            return 'high'
+        }
     }
 }
 </script>

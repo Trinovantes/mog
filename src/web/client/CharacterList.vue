@@ -64,7 +64,7 @@ const getCharacterTypeInfoImg = (characterType: string) => {
                 />
             </div>
 
-            <div>
+            <div class="options">
                 <q-checkbox
                     v-model="characterStore.includeAnniShop"
                     label="Include Anniversary Shop"
@@ -73,6 +73,10 @@ const getCharacterTypeInfoImg = (characterType: string) => {
                 <q-checkbox
                     v-model="characterStore.highlightAmounts"
                     label="Highlight Amounts"
+                />
+                <q-checkbox
+                    v-model="characterStore.convertToShards"
+                    label="Convert to Shards"
                 />
             </div>
         </div>
@@ -111,6 +115,10 @@ aside{
             grid-template-columns: 1fr auto;
             gap: $padding;
             align-items: center;
+        }
+
+        .options{
+            display: grid;
         }
     }
 
