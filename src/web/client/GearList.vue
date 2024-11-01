@@ -5,6 +5,22 @@ import { getGearTypeLabel, getGearRankLabel } from './store/gameData'
 
 const characterStore = useCharacterStore()
 const totalCost = computed(() => characterStore.totalCost)
+
+const getAmountCssClass = (amount: number): string => {
+    if (!characterStore.highlightAmounts) {
+        return ''
+    }
+
+    if (amount == 0) {
+        return ''
+    } else if (amount < 40) {
+        return 'low'
+    } else if (amount < 80) {
+        return 'medium'
+    } else {
+        return 'high'
+    }
+}
 </script>
 
 <template>
@@ -36,7 +52,9 @@ const totalCost = computed(() => characterStore.totalCost)
                     <strong>
                         {{ getGearTypeLabel(gearType) }}
                     </strong>
-                    <span>
+                    <span
+                        :class="getAmountCssClass(numShards)"
+                    >
                         {{ numShards }}
                     </span>
                 </div>
@@ -76,6 +94,19 @@ strong{
             align-content: center;
             text-align: center;
             width: 80px;
+
+            span{
+                &.low{
+                    background: yellow;
+                }
+                &.medium{
+                    background: orange;
+                }
+                &.high{
+                    background: orangered;
+                    color: white;
+                }
+            }
         }
     }
 }

@@ -16,6 +16,7 @@ export const useCharacterStore = defineStore(STORE_NAME, {
         return {
             goals: useLocalStorage(`${STORE_NAME}/goals`, new Array<CharacterGoal>()),
             includeAnniShop: useLocalStorage(`${STORE_NAME}/includeAnniShop`, false),
+            highlightAmounts: useLocalStorage(`${STORE_NAME}/highlightAmounts`, false),
         }
     },
 

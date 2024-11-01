@@ -70,6 +70,10 @@ const getCharacterTypeInfoImg = (characterType: string) => {
                     label="Include Anniversary Shop"
                     title="Subtracts equipment from anniversary shop from total cost"
                 />
+                <q-checkbox
+                    v-model="characterStore.highlightAmounts"
+                    label="Highlight Amounts"
+                />
             </div>
         </div>
 
